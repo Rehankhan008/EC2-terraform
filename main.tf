@@ -49,12 +49,21 @@ resource "aws_instance" "web_servers" {
   # Install Docker on the instance
   user_data = <<-EOF
               #!/bin/bash
+              # Update and install dependencies
               apt-get update -y
-              apt-get install -y apt-transport-https ca-certificates curl software-properties-common
+              apt-get install apt-transport-https ca-certificates curl software-properties-common
+
+              # Add Docker GPG key
               curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+
+              # Add Docker APT repository
               add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
+
+              # Update package lists and install Docker
               apt-get update -y
               apt-get install -y docker-ce
+
+              # Enable Docker to start on boot
               systemctl enable docker
               systemctl start docker
               EOF
