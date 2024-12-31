@@ -32,7 +32,7 @@ resource "aws_security_group" "allow_http_ssh" {
 # Create two EC2 instances in different AZs
 resource "aws_instance" "web_servers" {
   count         = 2
-  ami           = "ami-0c5cf6a79a8c2e3e9" # Replace with the latest Amazon Linux 2 AMI for your region
+  ami           = "ami-053b12d3152c0cc71" # Replace with the latest Amazon Linux 2 AMI for your region
   instance_type = "t2.micro"
   key_name      = "mum-key" # Use your existing key pair
 
