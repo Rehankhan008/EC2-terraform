@@ -1,6 +1,6 @@
 # Define provider
 provider "aws" {
-  region = "us-east-1" # Replace with your desired AWS region
+  region = "ap-south-1" # Replace with your desired AWS region
 }
 # Security Group for EC2
 resource "aws_security_group" "allow_http_ssh" {
