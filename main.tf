@@ -2,38 +2,6 @@
 provider "aws" {
   region = "us-east-1" # Replace with your desired AWS region
 }
-
-# VPC and Subnets
-data "aws_subnets" "selected" {
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0c6e26796d19cec26"] # Your specific VPC ID
-  }
-}
-
-# Get subnets for specific availability zones
-data "aws_subnet" "zone_a" {
-  filter {
-    name   = "availabilityZone"
-    values = ["us-east-1a"] # Replace with your desired AZ
-  }
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0c6e26796d19cec26"] # Your VPC ID
-  }
-}
-
-data "aws_subnet" "zone_b" {
-  filter {
-    name   = "availabilityZone"
-    values = ["us-east-1b"] # Replace with your desired AZ
-  }
-  filter {
-    name   = "vpc-id"
-    values = ["vpc-0c6e26796d19cec26"] # Your VPC ID
-  }
-}
-
 # Security Group for EC2
 resource "aws_security_group" "allow_http_ssh" {
   name        = "allow_http_ssh"
@@ -70,8 +38,8 @@ resource "aws_instance" "web_servers" {
 
   # Assign subnets based on count
   subnet_id = [
-    data.aws_subnet.zone_a.id,
-    data.aws_subnet.zone_b.id
+    "subnet-04a6a3611a6dff5d8", # Subnet in ap-south-1a
+    "subnet-008d71cd025e5b544"  # Subnet in ap-south-1b
   ][count.index]
 
   security_groups = [aws_security_group.allow_http_ssh.name]
