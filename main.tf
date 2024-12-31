@@ -2,6 +2,7 @@
 provider "aws" {
   region = "ap-south-1" # Replace with your desired AWS region
 }
+
 # Security Group for EC2
 resource "aws_security_group" "allow_http_ssh" {
   name        = "allow_http_ssh"
@@ -32,7 +33,7 @@ resource "aws_security_group" "allow_http_ssh" {
 # Create two EC2 instances in different AZs
 resource "aws_instance" "web_servers" {
   count         = 2
-  ami           = "ami-053b12d3152c0cc71" # Replace with the latest Amazon Linux 2 AMI for your region
+  ami           = "ami-053b12d3152c0cc71" # Replace with the correct Ubuntu 24.04 LTS AMI ID for your region
   instance_type = "t2.micro"
   key_name      = "mum-key" # Use your existing key pair
 
@@ -42,8 +43,10 @@ resource "aws_instance" "web_servers" {
     "subnet-008d71cd025e5b544"  # Subnet in ap-south-1b
   ][count.index]
 
-  security_groups = [aws_security_group.allow_http_ssh.name]
+  # Associate the security group created
+  vpc_security_group_ids = [aws_security_group.allow_http_ssh.id]
 
+  # Install Docker on the instance
   user_data = <<-EOF
               #!/bin/bash
               sudo apt update -y
@@ -53,7 +56,7 @@ resource "aws_instance" "web_servers" {
               sudo apt install -y docker-ce
               systemctl start docker
               systemctl enable docker
-              usermod -aG docker ec2-user
+              usermod -aG docker ubuntu  # Correct username for Ubuntu AMIs
             EOF
 
   tags = {
