@@ -63,6 +63,7 @@ resource "aws_instance" "web_servers" {
               sudo apt install docker-ce -y
               sudo systemctl status docker
               sudo usermod -aG docker ubuntu
+              newgrp docker
               EOF
 
   tags = {
