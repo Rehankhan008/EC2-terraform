@@ -60,8 +60,6 @@ resource "aws_instance" "web_servers" {
               # Add Docker APT repository
               sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
               sudo apt-cache policy docker-ce 
-              # Update package lists and install Docker
-              apt-get update -y
               sudo apt install docker-ce -y
               sudo systemctl status docker
               sudo usermod -aG docker ubuntu
